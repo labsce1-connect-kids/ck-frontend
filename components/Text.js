@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text } from 'react-native'
+// import * as Font from 'expo-font';
 
 export default class Typography extends Component {
+
+    // componentDidMount() {
+    //     Font.loadAsync({
+    //         'futura-light': require('./assets/fonts/futura-light-bt.ttf'),
+    //       });
+    // }
+
     render() {
         const { center, color, size, height, weight, spacing, style, children, ...props } = this.props;
         const textStyles = [
@@ -26,6 +34,7 @@ export default class Typography extends Component {
 const styles = StyleSheet.create({
     text: {
         fontSize: 14,
+        // fontFamily: 'futura-light',
     },
     center: {
         alignItems: 'center',
