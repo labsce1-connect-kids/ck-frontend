@@ -6,6 +6,6 @@ export default createStackNavigator({
     Forgot,
 },  {
     defaultNavigationOptions: {
-        title: 'Forgot Password'
+        title: 'Reset Password'
     }
 })

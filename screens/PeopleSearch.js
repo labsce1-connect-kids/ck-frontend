@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View} from 'react-native';
 
 import { Button, Block, Text, Input } from '../components';
 
-const styles = StyleSheet.create({
-    peoplesearch: {
-        flex: 1,
-    }
-});
+// const styles = StyleSheet.create({
+//     peoplesearch: {
+//         flex: 1,
+//     }
+// });
 
 class PeopleSearch extends Component {
     render() {
