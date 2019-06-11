@@ -1,0 +1,1 @@
+// This file contains static values for APIs
