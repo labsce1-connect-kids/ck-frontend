@@ -11,4 +11,8 @@ export default {
   warningText: '#666804',
   noticeBackground: tintColor,
   noticeText: '#fff',
+
+  clientBlue: 'rgb(80,141,179)',
+  clientLogo: '#008eb6',
+  
 };

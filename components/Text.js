@@ -11,7 +11,7 @@ export default class Typography extends Component {
     // }
 
     render() {
-        const { center, color, size, height, weight, spacing, style, children, ...props } = this.props;
+        const { center, color, size, height, weight, spacing, devBorder, style, children, ...props } = this.props;
         const textStyles = [
             styles.text,
             color && { color },
@@ -20,6 +20,7 @@ export default class Typography extends Component {
             weight && { fontWeight: weight },
             spacing && { letterSpacing: spacing },
             center && styles.center,
+            devBorder && styles.devBorder,
             style,
         ];
 
@@ -38,5 +39,11 @@ const styles = StyleSheet.create({
     },
     center: {
         alignItems: 'center',
+    },
+    devBorder: {
+        borderRadius: 4,
+        borderWidth: 0.5,
+        borderColor: 'red',
+        borderStyle: 'dashed',
     },
 });
