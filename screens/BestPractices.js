@@ -17,7 +17,6 @@ class BestPractices extends Component {
                 <View style={{ flex: 1 }}>
                     <Text 
                         height={18}
-                        weight={'600'}
                         style={{ marginTop: 70,
                         marginBottom: 40,
                         lineHeight: 28,

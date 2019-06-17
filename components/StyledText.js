@@ -1,8 +1,10 @@
 import React from 'react';
 import { Text } from 'react-native';
+import * as Font from 'expo-font';
 
-export function MonoText(props) {
+
+export function FuturaText(props) {
   return (
-    <Text {...props} style={[props.style, { fontFamily: 'space-mono' }]} />
+    <Text {...props} style={[props.style, { fontFamily: 'futura-light' }]} />
   );
 }

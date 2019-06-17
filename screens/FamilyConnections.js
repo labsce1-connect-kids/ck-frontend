@@ -20,7 +20,6 @@ class FamilyConnections extends Component {
                 <View style={{ flex: 1 }}>
                     <Text 
                         height={18}
-                        weight={'600'}
                         style={{ marginTop: 70,
                         marginBottom: 50,
                         lineHeight: 28,
@@ -38,7 +37,7 @@ class FamilyConnections extends Component {
                                     source={{uri: 'https://www.youtube.com/embed/_AHNi1kWT18' }}/>
                             </View>
                             <Button onPress={() => navigation.navigate('Register')} style={{ marginTop: 60 }} >
-                                <Text height={21} spacing={0} weight='bold' color='white'>I want access to Family Connections</Text>
+                                <Text height={21} spacing={0} color='white'>I want access to Family Connections</Text>
                             </Button>
                         </View>
                     </Block>

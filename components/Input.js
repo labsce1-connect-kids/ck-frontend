@@ -21,7 +21,6 @@ export default class Input extends Component {
                 size={12}
                 height={14}
                 spacing={1.12}
-                weight={'bold'}
                 color={'#B0BAC9'}
                 style={styles.label}
                 style={styles.rightLabel}>
