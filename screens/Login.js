@@ -23,7 +23,6 @@ class Login extends Component {
                     <Text 
                         color='#008eb6' 
                         height={50} 
-                        weight={'400'} 
                         spacing={0} 
                         size={50}>
                         <Image 
@@ -33,7 +32,6 @@ class Login extends Component {
                     </Text>
                     <Text 
                         height={22} 
-                        weight={'100'} 
                         spacing={0} 
                         color='#7f8fa6'
                         style={{ marginBottom: 40 }}>
@@ -44,10 +42,10 @@ class Login extends Component {
                         <Input style={{ marginBottom: 25 }} label='Password' password full/>
                         
                         <Button full title='SIGN IN' onPress={() => navigation.navigate('BestPractices')} style={{ marginBottom: 10 }} >
-                            <Text height={21} spacing={0} weight='bold' color='white'>Sign In</Text>
+                            <Text height={21} spacing={0} color='white'>Sign In</Text>
                         </Button>
                         <Button full title='Guest' onPress={() => navigation.navigate('BestPractices')} style={{ marginBottom: 10 }} >
-                            <Text height={21} spacing={0} weight='bold' color='white'>Continue as Guest</Text>
+                            <Text height={21} spacing={0} color='white'>Continue as Guest</Text>
                         </Button>
                         <Text 
                             style={{ marginTop: 20, marginBottom: 8 }} 
@@ -57,11 +55,10 @@ class Login extends Component {
                             <Text 
                             height={18}
                             color='rgb(80,141,179)' 
-                            weight={'600'}
                             onPress={() => navigation.navigate('Register')}> Sign Up
                             </Text>
                         </Text>
-                        <Text height={18} weight={'600'} onPress={() => navigation.navigate('Forgot')} color='rgb(80,141,179)'>Forgot Password</Text>
+                        <Text height={18} onPress={() => navigation.navigate('Forgot')} color='rgb(80,141,179)'>Forgot Password</Text>
                     </Block>
                 </Block>
             </Block>

@@ -28,7 +28,6 @@ class Register extends Component {
                     <Text 
                         color='#008eb6' 
                         height={41} 
-                        weight={'400'} 
                         spacing={0} 
                         size={33}
                         h3>
@@ -40,7 +39,6 @@ class Register extends Component {
                     </Text>
                     <Text 
                         height={18} 
-                        weight={'100'} 
                         spacing={0} 
                         color='#7f8fa6'
                         style={{ marginBottom: 13, marginTop: 2 }}
@@ -54,7 +52,7 @@ class Register extends Component {
                         <Input style={{ marginBottom: 25 }} label='Password' password full/>
                         
                         <Button full onPress={() => navigation.navigate('BestPractices')} style={{ marginBottom: 10 }} >
-                            <Text height={21} spacing={0} weight='bold' color='white'>Create Account</Text>
+                            <Text height={21} spacing={0} color='white'>Create Account</Text>
                         </Button>
                         <Text 
                             style={{ marginTop: 20 }} 
@@ -64,11 +62,10 @@ class Register extends Component {
                             <Text 
                             height={18}
                             color='#008eb6' 
-                            weight={'600'}
                             onPress={() => navigation.navigate('Login')}> Sign In
                             </Text>
                         </Text>
-                        {/* <Text height={18} weight={'400'} onPress={() => navigation.navigate('Forgot')} color='#7f8fa3'>Forgot Password</Text> */}
+                        {/* <Text height={18} onPress={() => navigation.navigate('Forgot')} color='#7f8fa3'>Forgot Password</Text> */}
                     </Block>
                 </Block>
             </Block>
