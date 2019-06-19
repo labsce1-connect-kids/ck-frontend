@@ -25,6 +25,11 @@ class BestPractices extends Component {
                         Watch the video below to learn more {`\n`} about the free tools
                         and resources in this app.
                     </Text>
+                    <Text 
+                                style={{ paddingLeft: 10, color: 'blue', paddingTop: 40, marginBottom: 20 }} 
+                                onPress={() => navigation.navigate('Support')}>
+                                SupportSupportSupport
+                            </Text>
                     <Block>
                         <View>
                             <View style={{ height: 250 }}>
