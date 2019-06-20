@@ -1,126 +1,207 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { KeyboardAvoidingView, Image, Dimensions } from 'react-native';
+import { StyleSheet, FlatList, View, Image } from 'react-native';
+import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import { Button, Block, Text, Input } from '../components';
-import Colors from '../constants/Colors';
-// import { green } from 'ansi-colors';
-
-const { height, width } = Dimensions.get('window');
-    {/* 
-    //GET WINDOW BELOW does not account for android nav or notifications bar
-        // height: height -100,
-        // width: width -150,
-            // REF: moto g6 -> 640Hx360W max
-    */}
 
 
 const styles = StyleSheet.create({
-    devBorder: {
-        borderColor: 'red',
-        borderStyle: 'dashed',
-        borderRadius: 4,
-        borderWidth: 0.5,
+    container: {
+      flex: 1,
+      marginTop: 5,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#F5FCFF',
     },
-    searchContainer: {
-        // // FLEX: 1 --> fills usable viewport
-        flex: 1,
-        paddingLeft: 15,
-        paddingRight: 15,
+    flatview: {
+      justifyContent: 'flex-start',
+      paddingTop: 10,
+      borderRadius: 2,
+      paddingRight: 30
     },
-
-    logo: {height: 50, width: 310},
-
-    searchInput: {
-        borderColor: Colors.clientBlue,
-        borderRadius: 35,
-        borderTopWidth: StyleSheet.hairlineWidth,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        // borderWidth: 1,
-        // borderTopWidth: 1,
-        // borderBottomWidth: 1,
-        // paddingLeft: 5,
-        // paddingRight: 5,
+    name: {
+      fontFamily: 'futura-light',
+      fontSize: 20,
+      color: '#008eb6',
+      fontWeight: '900',
     },
-});
+    email: {
+      color: '#000'
+    }
+    
+  });
+
+class Support extends Component {
+    constructor(props) {
+        super(props);
+        this.state= {
+            matches: '',
+            query: '',
+            httpStatus: '',
+            first: 'Clark',
+            last: 'Kent',
+            raw_address: '',
+            email: '',
+
+        }
+    }
+    changeHandler = e => {
+        // e.preventDefault(e);
+        this.setState({
+          [e.target.name]: e.target.value
+        });
+      };
+    onSubmit() {
+            // console.log('CALLED: onSubmit()');
+        const url = 'https://dev.search.connectourkids.org/api/search-v2';
+
+        let encoded;
+        const encodedName = encodeURI((`{"names": [{"first": "${this.state.first}","last": "${this.state.last}"}]}`));
+        // const encodedName = encodeURI((`{"names": [{"first": "${this.state.first}","last": "${this.state.last}"}],"addresses":[{"raw_address":"${this.state.raw_address}"}]}`));
+        
+        // phones
+        // {"phones": [{"number": "17039803804"}]}
+
+        // address
+        // {"addresses": [{"house": "8901", "street": "Garden Gate", "city":"Fairfax", "state": "VA", "zip_code": "22031"}]}
+
+        // url
+        // {"urls": [{"url": "https://twitter.com/dreamingwell"}]}
 
 
+        encoded = encodedName;
+            // console.log('encoded:\n', encoded);
+        const personJson = JSON.stringify({person:encoded})
+            // console.log('person-encoded-json:\n', personJson);
 
-class PeopleSearch extends Component {
+            const request = new Request(url, {
+                method: 'POST', 
+                body: personJson
+            });
+            const callApi = async () => {
+                
+                    try {
+                        await fetch(request)
+                        .then(response => response.json()).then(response => {
+                            // alert('2then');
+                            console.log('STRAIGHT FROM API response:', response);
+                            this.setState({
+                                matches: response.possible_persons,
+                                query: response.query,
+                            });
+                            console.log('These are the MATCHES:NAMES respones', this.state.matches)
+                            return response;
+                        })
+                        .catch((error, response) => {
+                            // alert('1catch')
+                            console.error('req failed', error);
+                        })
+                    } catch(err) {console.error('2catch', err);} 
+                    await reDirect();
+
+        }//callApi
+        callApi();
+        const reDirect = () => {
+            // if @http_status_code === 200 // ??? '@' symbol
+            //reset input
+            this.setState({first: '', last: '', raw_address: ''})
+            console.log('async after res? --> newState:', this.state);
+            return Promise.resolve(1);
+            //navigate to next screen
+        }
+        
+    }//onSubmit
+    
     render() {
-        const { navigation } = this.props;
         return (
-        <KeyboardAvoidingView style={{flex: 1}} keyboardVerticalOffset={height * 0.3} behavior='padding' enabled>
-            <View style={styles.searchContainer}>
-                {/* logo */}
-                <Block flex={0.16} center middle>
+            <ScrollableTabView
+                style={{marginTop: 5 }}
+                initialPage={0}
+                renderTabBar={() => 
+                <ScrollableTabBar 
+                tabBarActiveTextColor={'red'} 
+                style={{ marginBottom: 34 }} />}>
+                {/* <React.Fragment> */}
+                    <Block style={{ marginLeft: 25 }} tabLabel='Name'>
+                        <Input 
+                            onChangeText={(first) => {
+                            // {console.log(this.state.first)}
+                            this.setState({first})} 
+                            }
+                            name='first' 
+                            value={this.state.first} 
+                            style={{ marginBottom: 25 }} 
+                            label='First Name' 
+                            full
+                        />
+                        <Input onChangeText={(last) => this.setState({last})} name='last' value={this.state.last} style={{ marginBottom: 25 }} label='Last Name' full/>
+                        {/* <Input onChangeText={(raw_address) => this.setState({raw_address})} name='raw_address' value={this.state.raw_address} style={{ marginBottom: 25 }} label='City, State' full/> */}
+                            <Button full onPress={() => this.onSubmit()} style={{ marginBottom: 20 }} >
+                                <Text height={21} spacing={0} color='white'>Search By Name</Text>
+                            </Button>
+                        <FlatList 
+                        style={{ marginBottom: 60 }}
 
-                    <Image style={styles.logo} source={require('../assets/images/logo.png')} />
-
-                </Block >{/* logo end */}
-                {/* input */}
-                <Block flex={0.48} column middle stretch
-                    style={styles.searchInput}
-                >
-                    <Input 
-                        label='Enter Full Name, Email, Phone, or URL Address' 
-                        style={{ marginBottom: 25 }}
-                    />
-
-                    <Input 
-                        label='City, State (optional)'
-                        style={{ marginBottom: 25 }} 
-                    />
-
-                    <Button 
-                        title='SEARCH' 
-                        onPress={() => navigation.navigate('')} 
-                        style={{ width: 200,  alignSelf: 'center' }} 
-                        ><Text 
-                            style = {[ ]}
-                            // height={21} 
-                            spacing={0} color='white'
-
-                        >Search
-                        </Text>
-
-                    </Button>
-
-                </Block >{/* input end*/}
-                {/* info */}
-                    <Block flex={0.37}>
-                        <Text 
-                            // height={36}
-                            style={{ 
-                                fontSize: 26, 
-                                color: Colors.clientBlue 
-                            }}
-
-                        >People Search
-                        </Text>
-
-                        <Text 
-                            devBorder 
-
-                        >Social workers use this tool to find contact information for extended families and supporters of foster kids. This search uses public information from over 300 sources and covers over 3 billion people.
-                        </Text>
-
-                        <Text 
-                            style={{ 
-                                marginTop: 15, 
-                                color: Colors.clientBlue, 
-                                textDecorationLine: 'underline' 
-                            }}
-
-                        >PLACEHOLDER --> Watch a 2 minute quick introduction video
-                        </Text>
-
-                    </Block>{/* info end*/}
-
-                    {/* footer */}
-                    <Block flex={0.01} center middle style={{minHeight: 15}}><Text style={{fontSize: 8, color: '#bbbbbb'}}>Copyright Connect Our Kids 2019</Text></Block>{/* footer end*/}
-            </View>
-        </KeyboardAvoidingView>
+                        // Sample data
+                        // data={[{ name: "bob", age: 23 }, {name: "tim" }, 
+                        //     { name: "teddy" }, {name: "bear" }, 
+                        //     { name: "joe" }, {name: "grace" },
+                        //     { name: "rose" }, {name: "timothy" },
+                        //     { name: "arthur" }, {name: "dev" },
+                        //     { name: "code" }, {name: "software" } ]}
+                        
+                        // api starting @ possible_persons
+                        data={this.state.matches}
+                        showsVerticalScrollIndicator={true}
+                        showsHorizontalScrollIndicator={true}
+                        keyExtractor={(item, index) => index.toString()}
+                        styles={styles.container}
+                        renderItem={({ item }) =>
+                            <View style={styles.flatview}>
+                                <Text style={styles.name}>
+                                    {`${item.names[0].display}`}
+                                </Text>
+                                <Text style={styles.email}>Gender: {`${JSON.stringify(item.gender)}`} </Text>
+                                <Text style={styles.email}>Age: {`${JSON.stringify(item.dob)}`} </Text>
+                                <Text style={styles.email}>Phone: {`${JSON.stringify(item.phones)}`} </Text>
+                                <Text style={styles.email}>Location: {`${item.addresses[0].display}`} </Text>
+                                <Text style={styles.email}>Languages: {`${item.languages[0].display}`} </Text>
+                                <Text style={styles.email}>Url {`${JSON.stringify(item.url)}`} </Text>
+                            </View>
+                            }
+                        />
+                    </Block>
+                    <Block style={{ marginLeft: 25 }} tabLabel='Email'>
+                        <Input style={{ marginBottom: 25 }} label='Email' full/>
+                        <Button full style={{ marginBottom: 10 }} >
+                            <Text height={21} spacing={0} color='white'>Search By Email</Text>
+                        </Button>
+                    </Block>
+                    <Block style={{ marginLeft: 25 }} tabLabel='Phone'>
+                        <Input style={{ marginBottom: 25 }} label='Phone' full/>
+                        <Button full style={{ marginBottom: 10 }} >
+                            <Text height={21} spacing={0} color='white'>Search By Phone</Text>
+                        </Button>
+                    </Block>
+                    <Block style={{ marginLeft: 25 }} tabLabel='Address'>
+                        <Input style={{ marginBottom: 25 }} label='Address' full/>
+                        <Button full style={{ marginBottom: 10 }} >
+                            <Text height={21} spacing={0} color='white'>Search By Address</Text>
+                        </Button>
+                    </Block>
+                    <Block style={{ marginLeft: 25 }} tabLabel='URL'>
+                        <Input style={{ marginBottom: 25 }} label='URL' full/>
+                        <Button full style={{ marginBottom: 10 }} >
+                            <Text height={21} spacing={0} color='white'>Search By URL</Text>
+                        </Button>
+                    </Block>
+                    <Block center tabLabel='Recent Searches'>
+                        <Text>Recent Searches: </Text>
+                        
+                    </Block>
+                {/* </React.Fragment> */}
+            </ScrollableTabView>
         )
     }
 }
-export default PeopleSearch;
+export default Support;
+
