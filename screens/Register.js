@@ -16,27 +16,30 @@ class Register extends Component {
         const { navigation } = this.props;
         return (
             <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={height * 0.3} behavior='padding' enabled>
-            <Block center middle >
-                <Block middle>
-                    {/* <Text color='#008eb6'>Logo</Text> */}
-                    {/* <Image 
+            <Block  flex={1} center middle style={{marginTop: 50, marginBottom: 50,}} >
+                {/* <Block devBorder middle>
+                    <Text color='#008eb6'>Logo</Text>
+                    <Image 
                     source={require('../assets/images/logo.png')}
                     style={{ height: 50, width: 310 }}
-                    /> */}
-                </Block>
-                <Block flex={3.6} center>
-                    <Text 
-                        color='#008eb6' 
-                        height={41} 
-                        spacing={0} 
-                        size={33}
-                        h3>
-                        {/* <Image 
-                        source={require('../assets/images/logo.png')}
-                        style={{ height: 50, width: 310 }}
-                        />   */}
-                        Create an Account
-                    </Text>
+                    />
+                </Block> */}
+                    <Block flex={0.2} column center style={{justifyContent: 'flex-end'}}>
+                        <Text 
+                            color='#008eb6' 
+                            height={41} 
+                            spacing={0} 
+                            size={33}
+                            h3 
+                            center 
+                        >
+                            {/* <Image 
+                            source={require('../assets/images/logo.png')}
+                            style={{ height: 50, width: 310 }}
+                            />   */}
+                            Create an Account
+                        </Text>
+                    
                     <Text 
                         height={18} 
                         spacing={0} 
@@ -45,13 +48,14 @@ class Register extends Component {
                         >
                         Get started today
                     </Text>
-                    <Block center style={{ marginTop: 44 }}>
+                    </Block>
+                    <Block flex={0.8} center style={{ marginTop: 44 }}>
                         <Input style={{ marginBottom: 25 }} label='First Name' full/>
                         <Input style={{ marginBottom: 25 }} label='Last Name' full/>
                         <Input style={{ marginBottom: 25 }} label='Email Address' email full/>
                         <Input style={{ marginBottom: 25 }} label='Password' password full/>
                         
-                        <Button full onPress={() => navigation.navigate('BestPractices')} style={{ marginBottom: 10 }} >
+                        <Button full onPress={() => navigation.navigate('BestPractices')} style={{ marginBottom: 10 }} width>
                             <Text height={21} spacing={0} color='white'>Create Account</Text>
                         </Button>
                         <Text 
@@ -67,7 +71,6 @@ class Register extends Component {
                         </Text>
                         {/* <Text height={18} onPress={() => navigation.navigate('Forgot')} color='#7f8fa3'>Forgot Password</Text> */}
                     </Block>
-                </Block>
             </Block>
             </KeyboardAvoidingView>
         )

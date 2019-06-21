@@ -3,6 +3,10 @@ import { StyleSheet, FlatList, View, Image, Modal, TouchableHighlight } from 're
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import { Button, Block, Text, Input } from '../components';
 import ModalExample from './SearchCardModal';
+// import { Ionicons } from '@expo/vector-icons';
+// import  IconClose  from '../components/IconClose'
+{/* <Ionicons name="closecircle" size={32} color="red" /> */}
+// import { FontAwesome } from '@expo/vector-icons';
 
 
 const styles = StyleSheet.create({
@@ -23,7 +27,13 @@ const styles = StyleSheet.create({
       fontFamily: 'futura-light',
       fontSize: 20,
       color: '#008eb6',
-      fontWeight: '900',
+      lineHeight: 30
+      
+    },
+    text: {
+      fontSize: 12,
+      lineHeight: 14
+      
     },
     email: {
       color: '#000'
@@ -31,7 +41,7 @@ const styles = StyleSheet.create({
     
   });
 
-class Support extends Component {
+class PeopleSearch extends Component {
     constructor(props) {
         super(props);
         this.state= {
@@ -46,6 +56,9 @@ class Support extends Component {
 
         }
     }
+    //below key for <FlatList/>
+    _keyExtractor = (item, index) => item["@search_pointer_hash"];
+
     setModalVisible(visible) {
         this.setState({modalVisible: visible});
       }
@@ -90,11 +103,11 @@ class Support extends Component {
                         .then(response => response.json()).then(response => {
                             // alert('2then');
                             // console.log('STRAIGHT FROM API response:', response);
+                            console.warn('http_status:', response["@http_status_code"]);
                             this.setState({
                                 matches: response.possible_persons,
                                 query: response.query,
                             });
-                            // console.log('These are the MATCHES:NAMES respones', this.state.matches[0])
                             return response;
                         })
                         .catch((error, response) => {
@@ -111,6 +124,8 @@ class Support extends Component {
             //reset input
             this.setState({first: '', last: '', raw_address: ''})
             // console.log('async after res? --> newState:', this.state.matches);
+            // console.log('here',this.state.matches[0]["@search_pointer_hash"])
+            // ...
             return Promise.resolve(1);
             //navigate to next screen
         }
@@ -126,7 +141,6 @@ class Support extends Component {
                 <ScrollableTabBar 
                 tabBarActiveTextColor={'red'} 
                 style={{ marginBottom: 34 }} />}>
-                {/* <React.Fragment> */}
                     <Block style={{ marginLeft: 25 }} tabLabel='Name'>
                         <Input 
                             onChangeText={(first) => {
@@ -146,82 +160,95 @@ class Support extends Component {
                             </Button>
                         {/* {console.log('ITEM: ', this.state.matches[0].search_pointer)} */}
                         <FlatList 
+                        keyExtractor={this._keyExtractor}
                         style={{ marginBottom: 60 }}
-
-                        // Sample data
-                        // data={[{ name: "bob", age: 23 }, {name: "tim" }, 
-                        //     { name: "teddy" }, {name: "bear" }, 
-                        //     { name: "joe" }, {name: "grace" },
-                        //     { name: "rose" }, {name: "timothy" },
-                        //     { name: "arthur" }, {name: "dev" },
-                        //     { name: "code" }, {name: "software" } ]}
-                        
                         // api starting @ possible_persons
                         data={this.state.matches}
                         showsVerticalScrollIndicator={true}
                         showsHorizontalScrollIndicator={true}
-                        // keyExtractor={(item, index) => index.toString()}
-                        _keyExtractor = {(item, index) => index}
                         styles={styles.container}
                         renderItem={({ item }) =>
                             <React.Fragment>
                                 <View style={{marginTop: 22}}>
-                                <Modal
-                                animationType="slide"
-                                transparent={false}
-                                visible={this.state.modalVisible}
-                                onRequestClose={() => {
-                                    Alert.alert('Modal has been closed.');
-                                }}>
-                                <View style={{marginTop: 22}}>
-                                    <View>
-                                        {/* name */}
+                                    <Modal
+                                    animationType="slide"
+                                    transparent={false}
+                                    visible={this.state.modalVisible}
+                                    onRequestClose={() => {
+                                        // Alert.alert('Modal has been closed.');
+                                    }}>
+                                        
+                                    <TouchableHighlight style={{marginTop: 50, marginLeft: 50}}
+                                        onPress={() => {
+                                            this.setModalVisible(!this.state.modalVisible);
+                                    }}>
+                                            {/* <FontAwesome.Button name='close' backgroundColor='red' onPress={this.setModalVisible(!this.state.modalVisible)}/> */}
+                                            {/* <IconClose /> */}
+                                        <Text size={20}>Go Back</Text>
+                                    </TouchableHighlight>      
+                                    <View 
+                                        style={{
+                                            marginTop: 22,
+                                            flex: 1,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <View>
+                                            
+                                            {/* name */}
+                                            <Text 
+                                                style={styles.name}>
+                                                {`${item.names[0].display}`}
+                                            </Text>
+                                            <Text style={styles.email}>
+                                                Phone Numbers:{`\n`} {item.phones ? (item.phones.map(el => `${el.display},\n` )) : `n/a`}
+                                            </Text>
+                                        {/* {console.log('PHONES INFO: ', item.phones)} */}
+{/* */}
+                                    
+{/* */}                                 
+                                        </View>
+                                    </View>
+                                    </Modal>
+{/* */} 
+{/* */}
+                            </View>
+                            <View style={styles.flatview}>
+                                <Block
+                                    style={{
+                                        borderColor: '#bbb', 
+                                        borderBottomWidth: 1, 
+                                        borderStyle: 'solid',
+                                        paddingBottom: 15,
+                                        marginLeft: 15,
+                                    }}
+                                    >
+                                    <TouchableHighlight onPress={() => {this.setModalVisible(true);}}>
                                         <Text style={styles.name}>
                                             {`${item.names[0].display}`}
                                         </Text>
-                                        <Text style={styles.email}>
-                                            Phone Numbers:{`\n`} {item.phones ? (item.phones.map(el => `${el.display},\n` )) : `n/a`}
-                                        </Text>
-                                    {/* {console.log('PHONES INFO: ', item.phones)} */}
-                                    <TouchableHighlight
-                                        onPress={() => {
-                                        this.setModalVisible(!this.state.modalVisible);
-                                        }}>
-                                        <Text>Hide Modal</Text>
                                     </TouchableHighlight>
-                                    </View>
-                                </View>
-                                </Modal>
-
-                                <TouchableHighlight
-                                onPress={() => {
-                                    this.setModalVisible(true);
-                                }}>
-                                <Text>Show Modal</Text>
-                                </TouchableHighlight>
-                            </View>
-                            <View style={styles.flatview} key={item.index}>
-                                <Text style={styles.name}>
-                                    {`${item.names[0].display}`}
-                                </Text>
-                                <Text style={styles.email}> 
-                                    {(item.gender) ? `Gender: ${item.gender.content}` : 'Gender: n/a' }                             
-                                
-                                </Text>
-                                <Text style={styles.email}>
-                                    {(item.dob) ? `Age: ${item.dob.display}` : 'Age: n/a' }
-                                </Text>
-                                <Text style={styles.email}>Locations: {item.addresses.map((element, index) => {
-                                    return (
-                                    `${element.display}, ` 
-                                    )      
-                                })}
-                                </Text>
+                                    <Text style={styles.text}> 
+                                        {(item.gender) ? `Gender: ${item.gender.content}` : 'Gender: n/a' }                             
+                                    
+                                    </Text>
+                                    <Text style={styles.text}>
+                                        {(item.dob) ? `Age: ${item.dob.display}` : 'Age: n/a' }
+                                    </Text>
+                                    <Text style={styles.text}>Locations: {item.addresses.map((element, index) => {
+                                        return (
+                                        `${element.display}, ` 
+                                        )      
+                                    })}
+                                    </Text>
+                                </Block>
                             </View>
                             </React.Fragment>
                             }
                         />
                     </Block>
+{/* */} 
                     <Block style={{ marginLeft: 25 }} tabLabel='Email'>
                         <Input style={{ marginBottom: 25 }} label='Email' full/>
                         <Button full style={{ marginBottom: 10 }} >
@@ -250,10 +277,9 @@ class Support extends Component {
                         <Text>Recent Searches: </Text>
                         
                     </Block>
-                {/* </React.Fragment> */}
             </ScrollableTabView>
         )
     }
 }
-export default Support;
+export default PeopleSearch;
 
