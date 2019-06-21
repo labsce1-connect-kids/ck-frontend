@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Linking, WebView, Platform } from 'react-native';
-
-import { Button, Block, Text } from '../components';
+import { Block, Text } from '../components';
+import Colors from '../constants/Colors';
 
 class BestPractices extends Component {
 
@@ -13,49 +13,43 @@ class BestPractices extends Component {
         const { navigation } = this.props;
 
         return (
-            <Block center middle >
-                <View style={{ flex: 1 }}>
-                    <Text 
-                        height={18}
-                        style={{ marginTop: 70,
-                        marginBottom: 40,
-                        lineHeight: 28,
-                        fontSize: 15 }}> Connect Our Kids makes free tools for social {`\n`} workers
-                        engaged in permanancy searches for {`\n`} foster kids. 
-                        Watch the video below to learn more {`\n`} about the free tools
-                        and resources in this app.
+            <Block pageMargins center middle>
+                <Block flex={1} middle stretch>
+                    <Text size={18} lineHeight={27} 
+                        style={{ paddingLeft: 10 }}
+                    >Connect Our Kids makes free tools for social workers engaged in permanency searches for foster kids.  Watch the video below to learn more about the free tools and resources in this app.
                     </Text>
-                    <Text 
-                                style={{ paddingLeft: 10, color: 'blue', paddingTop: 40, marginBottom: 20 }} 
-                                onPress={() => navigation.navigate('Support')}>
-                                SupportSupportSupport
-                            </Text>
-                    <Block>
-                        <View>
-                            <View style={{ height: 250 }}>
-                                <WebView
-                                    // style={ styles.WebViewContainer }
-                                    javaScriptEnabled={true}
-                                    domStorageEnabled={true}
-                                    source={{uri: 'https://www.youtube.com/embed/tY-acY5oUUk' }}/>
-                            </View>
-                            <Text 
-                                style={{ paddingLeft: 10, color: 'blue', paddingTop: 40, marginBottom: 20 }} 
-                                onPress={() => navigation.navigate('PeopleSearch')}>
-                                People Search - Find Contact Information for Anyone
-                            </Text>
-                            <Text 
-                                style={{ paddingLeft: 10, color: 'blue', marginBottom: 20 }}
-                                onPress={() => navigation.navigate('FamilyConnections')}>
-                                Family Connections - Family Trees for Permanancy
-                            </Text>
-                            <Text 
-                                style={{ paddingLeft: 10, color: 'blue',  }} 
-                                onPress={() => this.handleLinking("https://connectourkids.org")}>
-                                Resources - Useful Materials and Information
-                            </Text>
-                        </View>
-                    </Block>
+                </Block>
+                <View style={{flex: 2}}>
+                    <View style={{ flex: 1, marginTop: 5, marginBottom: 5, }}>
+                        {/* WebView is deprecated and noticeably buggy 
+                            (Black screen flash, force close, sizing?). 
+                                Community package replacement has no expo.  
+                        Check out...  react-native-youtube */}
+                        <WebView
+                            // style={ styles.WebViewContainer }
+                            javaScriptEnabled={true}
+                            domStorageEnabled={true}
+                            source={{uri: 'https://www.youtube.com/embed/tY-acY5oUUk' }}/>
+                    </View>
+                    <View style={{flex: 1}} >
+                        <Text color={Colors.clientBlue}
+                            style={{ paddingLeft: 10, paddingTop: 40, marginBottom: 20 }} 
+                            onPress={() => navigation.navigate('PeopleSearch')}
+                        >People Search - Find Contact Information for Anyone
+                        </Text>
+                        <Text color={Colors.clientBlue}
+                            style={{ paddingLeft: 10, marginBottom: 20 }}
+                            onPress={() => navigation.navigate('FamilyConnections')}
+                        >Family Connections - Family Trees for Permanency
+                        </Text>
+                        {/* External Link */}
+                        <Text color={Colors.clientBlue}
+                            style={{ paddingLeft: 10}} 
+                            onPress={() => this.handleLinking("https://connectourkids.org")}
+                        >Resources - Useful Materials and Information
+                        </Text>
+                    </View>
                 </View>
             </Block>
         )

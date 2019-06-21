@@ -3,7 +3,12 @@ import { KeyboardAvoidingView, Image, Dimensions } from 'react-native';
 
 import { Button, Block, Text, Input } from '../components';
 
+import Colors from '../constants/Colors';
+
 const { height } = Dimensions.get('window');
+
+const { width } = Dimensions.get('window');
+
 
 class Login extends Component {
 
@@ -11,57 +16,53 @@ class Login extends Component {
         const { navigation } = this.props;
         return (
             <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={height * 0.3} behavior='padding' enabled>
-            <Block center middle>
-                <Block middle>
-                    {/* <Text color='#008eb6'>Logo</Text> */}
-                    {/* <Image 
-                    source={require('../assets/images/logo.png')}
-                    style={{ height: 50, width: 310 }}
-                    /> */}
-                </Block>
-                <Block flex={2.5} center>
-                    <Text 
-                        color='#008eb6' 
-                        height={50} 
-                        spacing={0} 
-                        size={50}>
+                <Block center style={{ marginTop:25, marginBottom:25 }} >
+                    <Block flex={1} middle center color={'#008eb6'} 
+                        style={{ minHeight: 95 }} 
+                    >
                         <Image 
-                        source={require('../assets/images/logo.png')}
-                        style={{ height: 50, width: 310 }}
+                            source={require('../assets/images/logo.png')}
+                            style={{ height: 75, width: 310, justifyContent: 'center' }}
                         />  
-                    </Text>
-                    <Text 
-                        height={22} 
-                        spacing={0} 
-                        color='#7f8fa6'
-                        style={{ marginBottom: 40 }}>
-                        Please enter your credentials
-                    </Text>
-                    <Block center style={{ marginTop: 44 }}>
-                        <Input style={{ marginBottom: 25 }} label='Email Address' email full/>
-                        <Input style={{ marginBottom: 25 }} label='Password' password full/>
-                        
-                        <Button full title='SIGN IN' onPress={() => navigation.navigate('BestPractices')} style={{ marginBottom: 10 }} >
-                            <Text height={21} spacing={0} color='white'>Sign In</Text>
+                        <Text color='#7f8fa6'
+                        >Please enter your credentials</Text>
+                    </Block>
+                    <Block flex={1.5} middle style={{ justifyContent: 'space-evenly' }}>
+                        <Input label='Email Address' email full/>
+                        <Input label='Password' password full/>
+                    </Block>
+                    <Block flex={1} center style={{ justifyContent: 'space-around' }}>
+                        <Button title='SIGN IN' full 
+                            onPress={() => navigation.navigate('BestPractices')}
+                            style={{ width: width - 44 }}   
+                        ><Text size={20} spacing={1} color='white'>Sign In</Text>
                         </Button>
-                        <Button full title='Guest' onPress={() => navigation.navigate('BestPractices')} style={{ marginBottom: 10 }} >
-                            <Text height={21} spacing={0} color='white'>Continue as Guest</Text>
+                        <Button title='Guest' size={18} full 
+                            onPress={() => navigation.navigate('BestPractices')}
+                        ><Text spacing={1} color='white'
+                            >Continue as Guest</Text>
                         </Button>
-                        <Text 
-                            style={{ marginTop: 20, marginBottom: 8 }} 
-                            color='#7f8fa6'
-                            height={22}>
-                            Don't have an account yet? 
-                            <Text 
-                            height={18}
-                            color='rgb(80,141,179)' 
-                            onPress={() => navigation.navigate('Register')}> Sign Up
-                            </Text>
+                    </Block>
+                    <Block flex={0.5} center style={{ justifyContent: 'space-between' }}>
+                        <Text spacing={1} color='#7f8fa6'
+                            style={{ fontFamily: 'futura-light-caps' }} 
+                        >Don't have an account yet?&nbsp;
+                            <Text size={16} spacing={1} color={Colors.clientBlue}
+                                style={{textDecorationLine: 'underline'}} 
+                                onPress={() => navigation.navigate('Register')}
+                            >Sign Up!</Text>
                         </Text>
-                        <Text height={18} onPress={() => navigation.navigate('Forgot')} color='rgb(80,141,179)'>Forgot Password</Text>
+                        <Text size={14} color={'#7f8fa6'} spacing={1}
+                            // color={Colors.clientBlue}
+                            style={{
+                                justifyContent: 'space-between', 
+                                textDecorationLine: 'underline', 
+                                fontFamily: 'futura-light-caps'
+                            }}
+                            onPress={() => navigation.navigate('Forgot')} 
+                        >Forgot Password</Text>
                     </Block>
                 </Block>
-            </Block>
             </KeyboardAvoidingView>
                 )
             }

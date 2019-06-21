@@ -3,11 +3,13 @@ import { StyleSheet, View } from 'react-native';
 
 export default class Block extends Component {
     render() {
-        const { flex, center, middle, bottom, nowrap, wrap, column, row, stretch, devBorder, style, children, ...props } = this.props;
+        const { flex, center, middle, bottom, nowrap, wrap, column, row, stretch, devBorder, style, pageMargins, children, ...props } = this.props;
         const blockStyles = [
             styles.block,
+            // block && styles.block,
             flex && { flex },
             center && styles.center,
+            pageMargins && styles.pageMargins,
             middle && styles.middle,
             bottom && styles.bottom,
             nowrap && styles.nowrap,
@@ -40,7 +42,7 @@ const styles = StyleSheet.create({
     },
     bottom: {
         flexDirection: 'row',
-        alignItems: 'flex-end',
+        alignContent: 'flex-end',
     },
     nowrap: {
         flexWrap: 'nowrap'
@@ -63,4 +65,10 @@ const styles = StyleSheet.create({
         borderColor: 'red',
         borderStyle: 'dashed',
     },
+    pageMargins: {
+        marginLeft: 15,
+        marginRight: 15,
+        marginTop: 15,
+        marginBottom: 5,
+    }
 });

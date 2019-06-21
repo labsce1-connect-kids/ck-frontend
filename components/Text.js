@@ -5,7 +5,7 @@ import * as Font from 'expo-font';
 export default class Typography extends Component {
     render() {
         const {
-            color, size, height, spacing, 
+            color, size, lineHeight, spacing, 
             text, center, devBorder, 
             style, children, 
             ...rest 
@@ -54,6 +54,7 @@ export default class Typography extends Component {
             defaultStyles,
             color && { color },
             size && { fontSize: size },
+            lineHeight && { lineHeight: lineHeight },
             spacing && { letterSpacing: spacing },
             devBorder && styles.devBorder,
             text && styles.text,
