@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, FlatList, View, Image } from 'react-native';
+import { StyleSheet, FlatList, View, Image, Modal, TouchableHighlight } from 'react-native';
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import { Button, Block, Text, Input } from '../components';
+import ModalExample from './SearchCardModal';
 
 
 const styles = StyleSheet.create({
@@ -41,9 +42,14 @@ class Support extends Component {
             last: 'Kent',
             raw_address: '',
             email: '',
+            modalVisible: false,
 
         }
     }
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+      }
+
     changeHandler = e => {
         // e.preventDefault(e);
         this.setState({
@@ -83,12 +89,12 @@ class Support extends Component {
                         await fetch(request)
                         .then(response => response.json()).then(response => {
                             // alert('2then');
-                            console.log('STRAIGHT FROM API response:', response);
+                            // console.log('STRAIGHT FROM API response:', response);
                             this.setState({
                                 matches: response.possible_persons,
                                 query: response.query,
                             });
-                            console.log('These are the MATCHES:NAMES respones', this.state.matches)
+                            // console.log('These are the MATCHES:NAMES respones', this.state.matches[0])
                             return response;
                         })
                         .catch((error, response) => {
@@ -104,7 +110,7 @@ class Support extends Component {
             // if @http_status_code === 200 // ??? '@' symbol
             //reset input
             this.setState({first: '', last: '', raw_address: ''})
-            console.log('async after res? --> newState:', this.state);
+            // console.log('async after res? --> newState:', this.state.matches);
             return Promise.resolve(1);
             //navigate to next screen
         }
@@ -138,6 +144,7 @@ class Support extends Component {
                             <Button full onPress={() => this.onSubmit()} style={{ marginBottom: 20 }} >
                                 <Text height={21} spacing={0} color='white'>Search By Name</Text>
                             </Button>
+                        {/* {console.log('ITEM: ', this.state.matches[0].search_pointer)} */}
                         <FlatList 
                         style={{ marginBottom: 60 }}
 
@@ -153,20 +160,65 @@ class Support extends Component {
                         data={this.state.matches}
                         showsVerticalScrollIndicator={true}
                         showsHorizontalScrollIndicator={true}
-                        keyExtractor={(item, index) => index.toString()}
+                        // keyExtractor={(item, index) => index.toString()}
+                        _keyExtractor = {(item, index) => index}
                         styles={styles.container}
                         renderItem={({ item }) =>
-                            <View style={styles.flatview}>
+                            <React.Fragment>
+                                <View style={{marginTop: 22}}>
+                                <Modal
+                                animationType="slide"
+                                transparent={false}
+                                visible={this.state.modalVisible}
+                                onRequestClose={() => {
+                                    Alert.alert('Modal has been closed.');
+                                }}>
+                                <View style={{marginTop: 22}}>
+                                    <View>
+                                        {/* name */}
+                                        <Text style={styles.name}>
+                                            {`${item.names[0].display}`}
+                                        </Text>
+                                        <Text style={styles.email}>
+                                            Phone Numbers:{`\n`} {item.phones ? (item.phones.map(el => `${el.display},\n` )) : `n/a`}
+                                        </Text>
+                                    {/* {console.log('PHONES INFO: ', item.phones)} */}
+                                    <TouchableHighlight
+                                        onPress={() => {
+                                        this.setModalVisible(!this.state.modalVisible);
+                                        }}>
+                                        <Text>Hide Modal</Text>
+                                    </TouchableHighlight>
+                                    </View>
+                                </View>
+                                </Modal>
+
+                                <TouchableHighlight
+                                onPress={() => {
+                                    this.setModalVisible(true);
+                                }}>
+                                <Text>Show Modal</Text>
+                                </TouchableHighlight>
+                            </View>
+                            <View style={styles.flatview} key={item.index}>
                                 <Text style={styles.name}>
                                     {`${item.names[0].display}`}
                                 </Text>
-                                <Text style={styles.email}>Gender: {`${JSON.stringify(item.gender)}`} </Text>
-                                <Text style={styles.email}>Age: {`${JSON.stringify(item.dob)}`} </Text>
-                                <Text style={styles.email}>Phone: {`${JSON.stringify(item.phones)}`} </Text>
-                                <Text style={styles.email}>Location: {`${item.addresses[0].display}`} </Text>
-                                <Text style={styles.email}>Languages: {`${item.languages[0].display}`} </Text>
-                                <Text style={styles.email}>Url {`${JSON.stringify(item.url)}`} </Text>
+                                <Text style={styles.email}> 
+                                    {(item.gender) ? `Gender: ${item.gender.content}` : 'Gender: n/a' }                             
+                                
+                                </Text>
+                                <Text style={styles.email}>
+                                    {(item.dob) ? `Age: ${item.dob.display}` : 'Age: n/a' }
+                                </Text>
+                                <Text style={styles.email}>Locations: {item.addresses.map((element, index) => {
+                                    return (
+                                    `${element.display}, ` 
+                                    )      
+                                })}
+                                </Text>
                             </View>
+                            </React.Fragment>
                             }
                         />
                     </Block>
