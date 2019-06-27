@@ -20,12 +20,12 @@ class FamilyConnections extends Component {
                 <Block >
                     <Block flex={1.5} middle >
                         <Text size={18} lineHeight={27} 
-                            style={{ paddingLeft: 10 }}
-                        >Learn about a revolutionary way to discover and {`\n`}engage extended families for at-risk foster youth. 
+                            style={{ paddingLeft: 10, marginTop: -30 }}
+                        >Learn about a revolutionary way to discover and engage extended families for at-risk foster youth. 
                         </Text>
                     </Block>
                     <Block flex={2.5}>
-                        <View style={{ flex:1 }}>
+                        <View style={{ flex: 1 , paddingHorizontal: 20, paddingVertical: 65, marginTop: -80 }}>
                             <WebView
                                 // style={ styles.WebViewContainer }
                                 javaScriptEnabled={true}
@@ -33,7 +33,7 @@ class FamilyConnections extends Component {
                                 source={{uri: 'https://www.youtube.com/embed/_AHNi1kWT18' }}/>
                         </View>
                     </Block>
-                    <Block style={{ marginTop: 60 }} >
+                    <Block style={{ marginTop: -10, paddingHorizontal: 20 }} >
                         <Button onPress={() => navigation.navigate('Register')}>
                             <Text spacing={0} color='white'>
                                 I want access to Family Connections
