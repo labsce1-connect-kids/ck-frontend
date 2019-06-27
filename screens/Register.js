@@ -49,7 +49,7 @@ class Register extends Component {
                         Get started today
                     </Text>
                     </Block>
-                    <Block flex={0.8} center style={{ marginTop: 44 }}>
+                    <Block flex={0.8} center style={{ marginTop: 30 }}>
                         <Input style={{ marginBottom: 25 }} label='First Name' full/>
                         <Input style={{ marginBottom: 25 }} label='Last Name' full/>
                         <Input style={{ marginBottom: 25 }} label='Email Address' email full/>

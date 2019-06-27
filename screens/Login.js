@@ -35,9 +35,9 @@ class Login extends Component {
                         <Button title='SIGN IN' full 
                             onPress={() => navigation.navigate('BestPractices')}
                             style={{ width: width - 44 }}   
-                        ><Text size={20} spacing={1} color='white'>Sign In</Text>
+                        ><Text spacing={1} color='white'>Sign In</Text>
                         </Button>
-                        <Button title='Guest' size={18} full 
+                        <Button title='Guest' style={{ marginBottom: 10 }} size={18} full 
                             onPress={() => navigation.navigate('BestPractices')}
                         ><Text spacing={1} color='white'
                             >Continue as Guest</Text>
@@ -47,7 +47,7 @@ class Login extends Component {
                         <Text spacing={1} color='#7f8fa6'
                             style={{ fontFamily: 'futura-light-caps' }} 
                         >Don't have an account yet?&nbsp;
-                            <Text size={16} spacing={1} color={Colors.clientBlue}
+                            <Text  spacing={1} color={Colors.clientBlue}
                                 style={{textDecorationLine: 'underline'}} 
                                 onPress={() => navigation.navigate('Register')}
                             >Sign Up!</Text>
@@ -57,7 +57,8 @@ class Login extends Component {
                             style={{
                                 justifyContent: 'space-between', 
                                 textDecorationLine: 'underline', 
-                                fontFamily: 'futura-light-caps'
+                                fontFamily: 'futura-light-caps',
+                                lineHeight: 16
                             }}
                             onPress={() => navigation.navigate('Forgot')} 
                         >Forgot Password</Text>

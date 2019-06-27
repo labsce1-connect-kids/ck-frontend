@@ -23,7 +23,7 @@ class Forgot extends Component {
                             height={22} 
                             spacing={0} 
                             color='#7f8fa6'
-                            style={{ marginBottom: 40 }}>
+                            style={{ marginBottom: 40, marginTop: 10 }}>
                             Enter the email address associated with your account
                         </Text>
                         <Block center >
