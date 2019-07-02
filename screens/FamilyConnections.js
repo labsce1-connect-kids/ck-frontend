@@ -1,14 +1,27 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, WebView, Platform } from 'react-native';
+import { View, WebView, Platform } from 'react-native';
 
 import { Button, Block, Text } from '../components';
 
-// const styles = StyleSheet.create({
- 
-//     WebViewContainer: {
-//         marginTop: (Platform.OS == 'ios') ? 70 : 0,
-//       }
-//     });
+const textBlurb = Platform.select({
+    android: { paddingLeft: 20, paddingRight: 15, marginTop: -40 },
+    ios: { paddingLeft: 15, paddingRight: 15, marginTop: -40 },
+  });
+
+const webViewStyle = Platform.select({
+    android: { flex: 1, marginLeft: 20, marginTop: -40 },
+    ios: { flex: 1, marginLeft: 15, marginRight: 15, marginTop: -30 },
+  });
+
+const webInlineStyle = Platform.select({
+    android: { width: 340, maxHeight: 200 },
+    ios: { width: 310, maxHeight: 200 },
+  });
+
+const connectionsButtonStyle = Platform.select({
+    android: { flex: 1, paddingLeft: 15, paddingRight: 15, marginTop: -180 },
+    ios: {flex: 1, paddingLeft: 15, paddingRight: 15, marginTop: -100 },
+})
 
 class FamilyConnections extends Component {
 
@@ -16,31 +29,37 @@ class FamilyConnections extends Component {
         const { navigation } = this.props;
 
         return (
-            <Block pageMargins center middle >
-                <Block >
-                    <Block flex={1.5} middle >
-                        <Text size={18} lineHeight={27} 
-                            style={{ paddingLeft: 10, marginTop: -30 }}
-                        >Learn about a revolutionary way to discover and engage extended families for at-risk foster youth. 
+            <Block pageMargins center middle>
+                <Block>
+                    <Block flex={1} middle stretch>
+                        <Text 
+                            size={18} 
+                            lineHeight={27} 
+                            style={{ ...textBlurb }}
+                        >
+                            Learn about a revolutionary way to discover and engage 
+                            extended families for at-risk foster youth.
                         </Text>
                     </Block>
-                    <Block flex={2.5}>
-                        <View style={{ flex: 1 , paddingHorizontal: 20, paddingVertical: 65, marginTop: -80 }}>
+                    <View style={{flex: 2}}>
+                        <View style={{ ...webViewStyle }}>
                             <WebView
                                 // style={ styles.WebViewContainer }
+                                // maxHeight, top, height, display, aspectRatio
+                                style={{ ...webInlineStyle }}
                                 javaScriptEnabled={true}
                                 domStorageEnabled={true}
                                 source={{uri: 'https://www.youtube.com/embed/_AHNi1kWT18' }}/>
                         </View>
-                    </Block>
-                    <Block style={{ marginTop: -10, paddingHorizontal: 20 }} >
+                    </View>
+                    <View style={{ ...connectionsButtonStyle }} >
                         <Button onPress={() => navigation.navigate('Register')}>
                             <Text spacing={0} color='white'>
                                 I want access to Family Connections
                             </Text>
                         </Button>
-                    </Block>
-                </Block >
+                    </View>
+                </Block>
             </Block>
         )
     }
