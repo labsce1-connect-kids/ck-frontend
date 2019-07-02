@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, FlatList, View, Image, Modal, TouchableHighlight } from 'react-native';
+import { StyleSheet, FlatList, View, Image, Modal, TouchableHighlight, ScrollView, Platform } from 'react-native';
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 import { Button, Block, Text, Input } from '../components';
-import ModalExample from './SearchCardModal';
+// import ModalExample from './SearchCardModal';
 // import { Ionicons } from '@expo/vector-icons';
 // import  IconClose  from '../components/IconClose'
-{/* <Ionicons name="closecircle" size={32} color="red" /> */}
+// <Ionicons name="closecircle" size={32} color="red" />
 // import { FontAwesome } from '@expo/vector-icons';
 
 
@@ -41,6 +41,16 @@ const styles = StyleSheet.create({
     
   });
 
+const streetWidth = Platform.select({
+    android: { width: 160 },
+    ios: { width: 124 },
+  });
+
+const zipCodeWidth = Platform.select({
+    android: { width: 115 },
+    ios: { width: 80 },
+  });
+
 class PeopleSearch extends Component {
     constructor(props) {
         super(props);
@@ -51,13 +61,21 @@ class PeopleSearch extends Component {
             first: 'Clark',
             last: 'Kent',
             raw_address: '',
-            email: '',
+            email: 'clark.kent@example.com',
             modalVisible: false,
             number: '17039803804',
             numberMatch: '',
             url: 'https://twitter.com/dreamingwell',
             urlMatches: '',
-            urlNames: ''
+            urlNames: '',
+            house: '602',
+            street: 'W College Drive',
+            city: 'Brainerd',
+            state: 'MN',
+            zip_code: '56401',
+            addressMatch: '',
+            emailMatch: '',
+            emailSearch: '',
         }
     }
     //below key for <FlatList/>
@@ -73,6 +91,104 @@ class PeopleSearch extends Component {
           [e.target.name]: e.target.value
         });
       };
+
+      submitEmail() {
+        const url = 'https://dev.search.connectourkids.org/api/search-v2';
+        let encoded;
+        const encodedName = encodeURI((`{"emails": [{"address": "${this.state.email}"}]}`));
+        encoded = encodedName;
+        const personJson = JSON.stringify({person:encoded})
+
+        const request = new Request(url, {
+            method: 'POST', 
+            body: personJson
+        });
+
+        const callApi = async () => {
+                
+            try {
+                await fetch(request)
+                .then(response => response.json()).then(response => {
+                    // alert('2then');
+                    console.log(response.query);
+                    // console.warn('http_status:', response["@http_status_code"]);
+                    this.setState({
+                        emailMatch: response.person.names,
+                        emailSearch: response.person,
+                        query: response.query,
+                    });
+                    return response;
+                })
+                .catch((error, response) => {
+                    // alert('1catch')
+                    console.error('req failed', error);
+                })
+            } catch(err) {console.error('2catch', err);} 
+            await reDirect();
+
+}
+        //callApi
+        callApi();
+        const reDirect = () => {
+            // if @http_status_code === 200 // ??? '@' symbol
+            //reset input
+            this.setState({email: ''})
+            // console.log('async after res? --> newState:', this.state.matches);
+            // console.log('here',this.state.matches[0]["@search_pointer_hash"])
+            // ...
+            // return Promise.resolve(2);
+            //navigate to next screen
+        }
+      }
+
+      submitAddress() {
+        const url = 'https://dev.search.connectourkids.org/api/search-v2';
+        let encoded;
+        const encodedName = encodeURI((`{"addresses": [{"house": "${this.state.house}", "street": "${this.state.street}", "city":"${this.state.city}", "state": "${this.state.state}", "country": "US", "zip_code": "${this.state.zip_code}"}]}`));
+        encoded = encodedName;
+        const personJson = JSON.stringify({person:encoded})
+
+        const request = new Request(url, {
+            method: 'POST', 
+            body: personJson
+        });
+
+        const callApi = async () => {
+                
+            try {
+                await fetch(request)
+                .then(response => response.json()).then(response => {
+                    // alert('2then');
+                    // console.log('API ADDRESS response:', response);
+                    // console.warn('http_status:', response["@http_status_code"]);
+                    this.setState({
+                        addressMatch: response.possible_persons,
+                        query: response.query,
+                    });
+                    return response;
+                })
+                .catch((error, response) => {
+                    // alert('1catch')
+                    console.error('req failed', error);
+                })
+            } catch(err) {console.error('2catch', err);} 
+            await reDirect();
+
+}
+        //callApi
+        callApi();
+        const reDirect = () => {
+            // if @http_status_code === 200 // ??? '@' symbol
+            //reset input
+            this.setState({house: '', street: '', city: '', state: '', zip_code: ''})
+            // console.log('async after res? --> newState:', this.state.matches);
+            // console.log('here',this.state.matches[0]["@search_pointer_hash"])
+            // ...
+            // return Promise.resolve(2);
+            //navigate to next screen
+        }
+      }
+      
 
       submitURL() {
         const url = 'https://dev.search.connectourkids.org/api/search-v2';
@@ -92,12 +208,12 @@ class PeopleSearch extends Component {
                 await fetch(request)
                 .then(response => response.json()).then(response => {
                     // alert('2then');
-                    console.log('API response:', response.query);
+                    // console.log('API response:', response.person.addresses);
                     // console.warn('http_status:', response["@http_status_code"]);
                     this.setState({
                         urlNames: response.person.names,
                         urlMatches: response.person.addresses,
-                        query: response.query.usernames,
+                        query: response.query,
                     });
                     return response;
                 })
@@ -209,7 +325,7 @@ class PeopleSearch extends Component {
                         await fetch(request)
                         .then(response => response.json()).then(response => {
                             // alert('2then');
-                            // console.log('STRAIGHT FROM API response:', response);
+                            // console.log('NAMES API response:', response);
                             // console.warn('http_status:', response["@http_status_code"]);
                             this.setState({
                                 matches: response.possible_persons,
@@ -308,9 +424,13 @@ class PeopleSearch extends Component {
                                                 style={styles.name}>
                                                 {`${item.names[0].display}`}
                                             </Text>
+                                            {/* <Text>
+                                                Emails:{`\n`}{item.emails ? (item.emails.map(el => `${el.display},\n` )) : `n/a`}
+                                            </Text> */}
                                             <Text style={styles.email}>
-                                                Phone Numbers:{`\n`} {item.phones ? (item.phones.map(el => `${el.display},\n` )) : `n/a`}
+                                                Phone Numbers:{`\n`}{item.phones ? (item.phones.map(el => `${el.display},\n` )) : `n/a`}
                                             </Text>
+                                            <Text>{`\n`}Addresses:{`\n`}{item.addresses ? (item.addresses.map(el => `${el.display},\n` )) : `n/a`} </Text>
                                         {/* {console.log('PHONES INFO: ', item.phones)} */}
 {/* */}
                                     
@@ -356,15 +476,111 @@ class PeopleSearch extends Component {
                         />
                     </Block>
 {/* */} 
-                    {/* <Block style={{ marginLeft: 25 }} tabLabel='Email'>
-                        <Input style={{ marginBottom: 25 }} label='Email' full/>
-                        <Button full style={{ marginBottom: 10 }} >
+                    <Block style={{ marginLeft: 25 }} tabLabel='Email'>
+                        <Input onChangeText={(email) => this.setState({email})} name='email' value={this.state.email} style={{ marginBottom: 25 }} label='Email' full/>
+                        <Button onPress={() => this.submitEmail()} full style={{ marginBottom: 20 }} >
                             <Text height={21} spacing={0} color='white'>Search By Email</Text>
                         </Button>
-                    </Block> */}
+                        <FlatList 
+                        keyExtractor={(index, key) => key.toString()}
+                        style={{  }}
+                        // api starting @ person
+                        data={this.state.emailMatch}
+                        showsVerticalScrollIndicator={true}
+                        showsHorizontalScrollIndicator={true}
+                        styles={styles.container}
+                        renderItem={({ item }) =>
+                            <React.Fragment>
+                                <View style={{marginTop: 22}}>
+                                    <Modal
+                                    animationType="slide"
+                                    transparent={false}
+                                    visible={this.state.modalVisible}
+                                    onRequestClose={() => {
+                                        // Alert.alert('Modal has been closed.');
+                                    }}>
+                                        
+                                    <TouchableHighlight style={{marginTop: 50, marginLeft: 50}}
+                                        onPress={() => {
+                                            this.setModalVisible(!this.state.modalVisible);
+                                    }}>
+                                            {/* <FontAwesome.Button name='close' backgroundColor='red' onPress={this.setModalVisible(!this.state.modalVisible)}/> */}
+                                            {/* <IconClose /> */}
+                                        <Text size={20}>Go Back</Text>
+                                    </TouchableHighlight>      
+                                    <View 
+                                        style={{
+                                            marginTop: 22,
+                                            flex: 1,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <View>
+                                            
+                                            {/* name */}
+                                            <Text key={item}
+                                                style={styles.name}>
+                                                {/* {`${item.names["display"]}`} */}
+                                                {/* User Id:{`\n`} {item.names ? (item.names.map(el => `${el.first},\n` )) : `n/a`} */}
+                                            </Text>
+                                            {/* <Text style={styles.email}>
+                                                Location: {item ? (item.map(el => `${el.display}` )) : `n/a`}
+                                            </Text> */}
+                                            {/* <Text>
+                                                User Id:{`\n`} {item.user_ids ? (item.user_ids.map(el => `${el.content},\n` )) : `n/a`}
+                                            </Text> */}
+                                        {/* {console.log('PHONES INFO: ', item.phones)} */}
+{/* */}
+                                    
+{/* */}                                 
+                                        </View>
+                                    </View>
+                                    </Modal>
+{/* */} 
+{/* */}
+                            </View>
+                            <View style={styles.flatview}>
+                                <Block
+                                    style={{
+                                        borderColor: '#bbb', 
+                                        borderBottomWidth: 1, 
+                                        borderStyle: 'solid',
+                                        paddingBottom: 15,
+                                        marginLeft: 15,
+                                    }}
+                                >
+                                    <TouchableHighlight onPress={() => {this.setModalVisible(true);}}>
+                                        <Text style={styles.name}>
+                                            {item.display}
+                                        </Text>
+                                    </TouchableHighlight>
+                                    <Text style={styles.text}>
+                                        Age: {this.state.emailSearch.dob.display}{`\n`}
+                                    </Text>
+                                    <Text style={styles.text}> 
+                                        Emails:{`\n`}{this.state.emailSearch.emails ? (this.state.emailSearch.emails.map(el => `${el.address}\n` )) : `n/a`}
+                                    </Text>
+                                    <Text style={styles.text}>
+                                        Phone Numbers: {this.state.emailSearch.phones ? (this.state.emailSearch.phones.map(el => `${el.display} ` )) : `n/a`}
+                                    </Text>
+                                    <Text style={styles.text}>
+                                        {`\n`}Addresses: {this.state.emailSearch.addresses ? (this.state.emailSearch.addresses.map(el => `${el.display} ` )) : `n/a`}
+                                    </Text>
+                                    <Text style={styles.text}>
+                                        {`\n`}Relationships:{`\n`}{this.state.emailSearch.relationships ? (this.state.emailSearch.relationships.map(el => `${el["@subtype"]}\n` )) : `n/a`}
+                                    </Text>
+                                </Block>
+                            </View>
+                            </React.Fragment>
+                            }
+                        />
+                    </Block>
+
+
                     <Block style={{ marginLeft: 25 }} tabLabel='Phone'>
                         <Input onChangeText={(number) => this.setState({number})} name='number' value={this.state.number} style={{ marginBottom: 25 }} label='Phone Number' placeholder='17039803804' full/>
-                        <Button onPress={() => this.submitPhone()} full style={{ marginBottom: 10 }} >
+                        <Button onPress={() => this.submitPhone()} full style={{ marginBottom: 20 }} >
                             <Text height={21} spacing={0} color='white'>Search By Phone</Text>
                         </Button>
                         <FlatList 
@@ -453,8 +669,8 @@ class PeopleSearch extends Component {
                                         )      
                                     })}
                                     </Text> */}
-                                    <Text>
-                                        Location: {item.addresses ? (item.addresses.map(el => ` ${el.display} ` )) : `n/a`}
+                                    <Text style={styles.text}>
+                                        Location: {item.addresses ? (item.addresses.map(el => `${el.display} ` )) : `n/a`}
                                     </Text>
                                     {/* <Text>
                                     {(item.addresses) ? `Location: ${item.addresses[0].display}` : 'Location: n/a' }
@@ -469,26 +685,26 @@ class PeopleSearch extends Component {
 
 
 
-                    <Block style={{ marginLeft: 25 }} tabLabel='Address'>
-                        <Input style={{ marginBottom: 25 }} label='House Number' placeholder='4428' full/>
-                        <Input style={{ marginBottom: 25 }} label='Street Name' placeholder='Garden Gate' required full/>
-                        <Input style={{ marginBottom: 25 }} label='City' placeholder='Fairfax' required full/>
-                        <Input style={{ marginBottom: 25 }} label='State' placeholder='VA' required full/>
-                        <Input style={{ marginBottom: 25 }} label='Zipcode' placeholder='22031' required full/>
-                        <Button full style={{ marginBottom: 10 }} >
-                            <Text height={21} spacing={0} color='white'>Search By Address</Text>
-                        </Button>
-                    </Block>
-                    <Block style={{ marginLeft: 25 }} tabLabel='URL'>
-                        <Input onChangeText={(url) => this.setState({url})} name='url' value={this.state.url} placeholder='https://twitter.com/dreamingwell' style={{ marginBottom: 25 }} label='URL' full/>
-                        <Button onPress={() => this.submitURL()} full style={{ marginBottom: 10 }} >
-                            <Text height={21} spacing={0} color='white'>Search By URL</Text>
-                        </Button>
+                    <Block style={{ flex: 1, marginLeft: 25 }} tabLabel='Address'>
+                        <View style={{flexDirection: 'row' }}>
+                            <Input onChangeText={(house) => this.setState({house})} name='house' value={this.state.house} style={{ marginRight: 15, width: 185 }} label='House Number' placeholder='4428'required/>
+                            <Input onChangeText={(street) => this.setState({street})} name='street' value={this.state.street} style={{...streetWidth}} label='Street Name' placeholder='Garden Gate' required/>
+                        </View>
+                        <View style={{flexDirection: 'row', marginTop: 25 }}>
+                            <Input onChangeText={(city) => this.setState({city})} name='city' value={this.state.city} style={{ marginRight: 15, width: 150 }} label='City' placeholder='Fairfax' required/>
+                            <Input onChangeText={(state) => this.setState({state})} name='state' value={this.state.state} style={{ marginRight: 15, width: 65 }} label='State' placeholder='VA' required/>
+                            <Input onChangeText={(zip_code) => this.setState({zip_code})} name='zip_code' value={this.state.zip_code} style={{...zipCodeWidth}} label='Zipcode' placeholder='22031' required/>
+                        </View>
+                        <View style={{ marginTop: 25, marginBottom: 20 }}>
+                            <Button onPress={() => this.submitAddress()} full >
+                                <Text height={21} spacing={0} color='white'>Search By Address</Text>
+                            </Button>
+                        </View>
                         <FlatList 
                         keyExtractor={(index, key) => key.toString()}
-                        style={{ marginBottom: 60 }}
+                        style={{  }}
                         // api starting @ possible_persons
-                        data={this.state.urlMatches}
+                        data={this.state.addressMatch}
                         showsVerticalScrollIndicator={true}
                         showsHorizontalScrollIndicator={true}
                         styles={styles.container}
@@ -524,8 +740,7 @@ class PeopleSearch extends Component {
                                             {/* name */}
                                             <Text key={item}
                                                 style={styles.name}>
-                                                {`${this.state.urlNames[0].display}`} {`\n`}
-                                                {`${item["display"]}`}
+                                                {/* {item.names ? (item.names.map(el => `${el.display},\n` )) : `n/a`} */}
                                                 {/* User Id:{`\n`} {item.names ? (item.names.map(el => `${el.first},\n` )) : `n/a`} */}
                                             </Text>
                                             {/* <Text style={styles.email}>
@@ -556,12 +771,114 @@ class PeopleSearch extends Component {
                                 >
                                     <TouchableHighlight onPress={() => {this.setModalVisible(true);}}>
                                         <Text style={styles.name}>
-                                        {this.state.urlNames[0].display}
+                                            {/* {item.names ? (item.names.map(el => `${el.display}\n` )) : `n/a`} */}
+                                            {item.names[0].display}
+                                        </Text>
+                                    </TouchableHighlight>
+                                    <Text style={styles.text}>
+                                        {(item.gender) ? `Gender: ${item.gender.content}` : 'Gender: n/a' }
+                                    </Text>
+                                    <Text style={styles.text}>
+                                        {(item.dob) ? `Age: ${item.dob.display}` : 'Age: n/a' }
+                                    </Text>
+                                    {/* <Text style={styles.text}> 
+                                        Phone Numbers:{`\n`}{item.phones ? (item.phones.map(el => `${el.display}\n` )) : `n/a`}
+                                    </Text> */}
+                                    <Text style={styles.text}>
+                                    Addresses: {item.addresses ? (item.addresses.map(el => `${el.display} ` )) : `n/a`}
+                                    </Text>
+                                </Block>
+                            </View>
+                            </React.Fragment>
+                            }
+                        />
+                
+                    </Block>
+
+
+                    
+                    <Block style={{ marginLeft: 25 }} tabLabel='URL'>
+                        <Input onChangeText={(url) => this.setState({url})} name='url' value={this.state.url} placeholder='https://twitter.com/dreamingwell' style={{ marginBottom: 25 }} label='URL' full/>
+                        <Button onPress={() => this.submitURL()} full style={{ marginBottom: 20 }} >
+                            <Text height={21} spacing={0} color='white'>Search By URL</Text>
+                        </Button>
+                        <FlatList 
+                        keyExtractor={(index, key) => key.toString()}
+                        style={{ marginBottom: 60 }}
+                        // api starting @ possible_persons
+                        data={this.state.urlNames}
+                        showsVerticalScrollIndicator={true}
+                        showsHorizontalScrollIndicator={true}
+                        styles={styles.container}
+                        renderItem={({ item }) =>
+                            <React.Fragment>
+                                <View style={{marginTop: 22}}>
+                                    <Modal
+                                    animationType="slide"
+                                    transparent={false}
+                                    visible={this.state.modalVisible}
+                                    onRequestClose={() => {
+                                        // Alert.alert('Modal has been closed.');
+                                    }}>
+                                        
+                                    <TouchableHighlight style={{marginTop: 50, marginLeft: 50}}
+                                        onPress={() => {
+                                            this.setModalVisible(!this.state.modalVisible);
+                                    }}>
+                                            {/* <FontAwesome.Button name='close' backgroundColor='red' onPress={this.setModalVisible(!this.state.modalVisible)}/> */}
+                                            {/* <IconClose /> */}
+                                        <Text size={20}>Go Back</Text>
+                                    </TouchableHighlight>      
+                                    <View 
+                                        style={{
+                                            marginTop: 22,
+                                            flex: 1,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <View>
+                                            
+                                            {/* name */}
+                                            <Text key={item}
+                                                style={styles.name}>
+                                                {/* {`${this.state.urlNames.display}`} {`\n`} */}
+                                                {/* {this.state.urlNames} */}
+                                                User Id:{`\n`} {this.state.urlNames.names ? (this.state.urlNames.names.map(el => `${el.first},\n` )) : `n/a`}
+                                            </Text>
+                                            {/* <Text style={styles.email}>
+                                                Location: {item ? (item.map(el => `${el.display}` )) : `n/a`}
+                                            </Text> */}
+                                            {/* <Text>
+                                                User Id:{`\n`} {item.user_ids ? (item.user_ids.map(el => `${el.content},\n` )) : `n/a`}
+                                            </Text> */}
+                                        {/* {console.log('PHONES INFO: ', item.phones)} */}
+{/* */}
+                                    
+{/* */}                                 
+                                        </View>
+                                    </View>
+                                    </Modal>
+{/* */} 
+{/* */}
+                            </View>
+                            <View style={styles.flatview}>
+                                <Block
+                                    style={{
+                                        borderColor: '#bbb', 
+                                        borderBottomWidth: 1, 
+                                        borderStyle: 'solid',
+                                        paddingBottom: 15,
+                                        marginLeft: 15,
+                                    }}
+                                >
+                                    <TouchableHighlight onPress={() => {this.setModalVisible(true);}}>
+                                        <Text style={styles.name}>
+                                            {item.display}
                                         </Text>
                                     </TouchableHighlight>
                                     <Text style={styles.text}> 
-                                        {item.display}           
-                                    
+                                        Addresses: {this.state.urlMatches ? (this.state.urlMatches.map(el => `${el.display} ` )) : `n/a`}                                   
                                     </Text>
                                 </Block>
                             </View>
@@ -574,6 +891,7 @@ class PeopleSearch extends Component {
 
                     <Block center tabLabel='Recent Searches'>
                         <Text>Recent Searches: </Text>
+                        <Text style={styles.name}>Coming Soon</Text>
                     </Block>
             </ScrollableTabView>
         )
