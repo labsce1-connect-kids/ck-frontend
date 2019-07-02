@@ -15,7 +15,12 @@ class Login extends Component {
     render() {
         const { navigation } = this.props;
         return (
-            <KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={height * 0.3} behavior='padding' enabled>
+            <KeyboardAvoidingView 
+                style={{ flex: 1 }} 
+                // keyboardVerticalOffset={height * 0.3} 
+                // behavior='padding' 
+                enabled
+            >
                 <Block center style={{ marginTop:25, marginBottom:25 }} >
                     <Block flex={1} middle center color={'#008eb6'} 
                         style={{ minHeight: 95 }} 
@@ -24,8 +29,7 @@ class Login extends Component {
                             source={require('../assets/images/logo.png')}
                             style={{ height: 75, width: 310, justifyContent: 'center' }}
                         />  
-                        <Text color='#7f8fa6'
-                        >Please enter your credentials</Text>
+                        <Text color='#7f8fa6'>Please enter your credentials</Text>
                     </Block>
                     <Block flex={1.5} middle style={{ justifyContent: 'space-evenly' }}>
                         <Input label='Email Address' email full/>
@@ -35,24 +39,40 @@ class Login extends Component {
                         <Button title='SIGN IN' full 
                             onPress={() => navigation.navigate('BestPractices')}
                             style={{ width: width - 44 }}   
-                        ><Text spacing={1} color='white'>Sign In</Text>
+                        >
+                            <Text spacing={1} color='white'>Sign In</Text>
                         </Button>
-                        <Button title='Guest' style={{ marginBottom: 10 }} size={18} full 
+                        <Button 
+                            title='Guest' 
+                            style={{ marginBottom: 10, width: width - 44 }} size={18} 
+                            full 
                             onPress={() => navigation.navigate('BestPractices')}
-                        ><Text spacing={1} color='white'
-                            >Continue as Guest</Text>
+                        >
+                            <Text spacing={1} color='white'>
+                                Continue as Guest
+                            </Text>
                         </Button>
                     </Block>
                     <Block flex={0.5} center style={{ justifyContent: 'space-between' }}>
-                        <Text spacing={1} color='#7f8fa6'
+                        <Text 
+                            spacing={1} 
+                            color='#7f8fa6'
                             style={{ fontFamily: 'futura-light-caps' }} 
-                        >Don't have an account yet?&nbsp;
-                            <Text  spacing={1} color={Colors.clientBlue}
+                        >
+                            Don't have an account yet?&nbsp;
+                            <Text 
+                                spacing={1} 
+                                color={Colors.clientBlue}
                                 style={{textDecorationLine: 'underline'}} 
                                 onPress={() => navigation.navigate('Register')}
-                            >Sign Up!</Text>
+                            >
+                                Sign Up!
+                            </Text>
                         </Text>
-                        <Text size={14} color={'#7f8fa6'} spacing={1}
+                        <Text 
+                            size={14} 
+                            color={'#7f8fa6'} 
+                            spacing={1}
                             // color={Colors.clientBlue}
                             style={{
                                 justifyContent: 'space-between', 
@@ -61,7 +81,9 @@ class Login extends Component {
                                 lineHeight: 16
                             }}
                             onPress={() => navigation.navigate('Forgot')} 
-                        >Forgot Password</Text>
+                        >
+                            Forgot Password
+                        </Text>
                     </Block>
                 </Block>
             </KeyboardAvoidingView>
