@@ -16,7 +16,7 @@ export default class Typography extends Component {
         let defaultStyles = {
             fontFamily: 'futura-light',
             fontSize: 14,
-            // lineHeight: null
+            lineHeight: 18
         }
 {/* 
         // const lineHeightPreset = 1.15;
