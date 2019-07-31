@@ -4,11 +4,10 @@ Front end for Connect Our Kids web application (Web only React Native)
 # Connect Our Kids
 
 ## Contributors
-|                                       [Tristan Linehan](https://github.com/tlinehan)                                        |                                       [Aquila Strother](https://github.com/astro11)                                        |                                                            |
-| :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: |
-|                      [<img src="https://avatars0.githubusercontent.com/u/13667814?s=460&v=4" width = "200" />](https://github.com/tlinehan)                       |                      [<img src="https://media.licdn.com/dms/image/C4E03AQEEvzl7UFzKgg/profile-displayphoto-shrink_200_200/0?e=1570060800&v=beta&t=8yKi2lSNOAdU5Ovsy26lu5a_PxhBmNc_2dClfUoOT6o" width = "200" />](https://github.com/astro11)                       |                      
-| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/tristan-linehan) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/aquilastrother)
-<br>
+| [Tristan Linehan](https://github.com/tlinehan)    | [Aquila Strother](https://github.com/astro11)  |
+| :-------------: | :-------------: |
+| [<img src="https://avatars0.githubusercontent.com/u/13667814?s=460&v=4" width = "200" />](https://github.com/tlinehan)  | [<img src="https://media.licdn.com/dms/image/C4E03AQEEvzl7UFzKgg/profile-displayphoto-shrink_200_200/0?e=1570060800&v=beta&t=8yKi2lSNOAdU5Ovsy26lu5a_PxhBmNc_2dClfUoOT6o" width = "200" />](https://github.com/astro11)   |
+| [<img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/tristan-linehan) | [<img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/aquilastrother)  |
 <br>
 
 ![MIT](https://img.shields.io/packagist/l/doctrine/orm.svg)
